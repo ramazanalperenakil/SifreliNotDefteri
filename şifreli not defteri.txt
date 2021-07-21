@@ -1,0 +1,136 @@
+from tkinter import *
+from tkinter import messagebox
+from random import randint
+import datetime
+import time
+import tkinter as tk
+import os
+
+penccere= Tk()
+penccere.geometry('400x200')
+penccere.title("ÞÝFRELÝ NOT DEFTERÝ GÝRÝÞÝ")
+penccere.configure(bg='#FF8A17')
+
+###################################################################
+
+
+gun 	  = datetime.datetime.now().strftime("%d");
+ay 	      = datetime.datetime.now().strftime("%m");
+yil 	  = datetime.datetime.now().strftime("%Y");
+saat 	  = datetime.datetime.now().strftime("%H");
+dakika	  = datetime.datetime.now().strftime("%M"); 
+tarihsaat = datetime.datetime.now().strftime("%d-%m-%Y %H:%M");
+
+##################################################################
+    
+def login():
+    
+    
+    if giriskadi.get() == "ramazan" and girissifre.get() == "2020":
+        penccere.withdraw()
+        pencere2 = Toplevel()
+        pencere2.geometry('450x400')
+        pencere2.title("ÞÝFRELÝ NOT DEFTERÝ GÝRÝÞÝ")
+        EtiketÝsim = Label(pencere2,text = "MERHABA " + giriskadi.get() + " HOÞGELDÝN"  , font = "Helvetica 18" )
+        EtiketÝsim.pack()
+        btn_pen = Button(pencere2,text="ÇIKIÞ",command=penccere.destroy)
+        btn_pen.pack()
+        btn_pen.place(x = 300,y = 250)
+        dizin = os.path.exists("C:\\Ramazan_Alperen_Akýl") 
+        if (dizin==False):
+            print("dizin yok")
+            os.mkdir('C:\\Ramazan_Alperen_Akýl')
+            open("C:\\Ramazan_Alperen_Akýl\\Not_Defteri.txt","w")
+        file = open("C:\\Ramazan_Alperen_Akýl\\Not_Defteri.txt","r")
+        sb1 = Scrollbar(pencere2)
+        sb1.pack( side = RIGHT, fill = Y )
+        
+        yazi = Text(pencere2,bd = 2 ,yscrollcommand = sb1.set )
+        yazi.pack()
+        for i in file: 
+            #print(i) 
+            yazi.insert(tk.END,i)
+        yazi.place( x = 10, y = 40, height= 250 , width= 280 )
+        file.close()
+        
+       
+      
+    
+        
+##############################################################################################################33       
+
+        label1 = Label(pencere2,text = str(randint(1000, 9999)),font=("Windows Outline",15,"bold"))
+        label1.pack()
+        label1.place(x =300,y =100)
+        kontrol = Entry(pencere2,bd=2 )
+        kontrol.pack()
+        kontrol.place(x = 300 , y =150)
+        
+        
+############################################################################################################
+
+        def guvenlik_kodu():
+            if label1['text']  ==  kontrol.get() :
+                messagebox.showwarning("Doðrulama Baþarýlý","Metin KAYIT EDÝLDÝ")
+                
+                dosya = open("C:\\Ramazan_Alperen_Akýl\\Not_Defteri.txt", "w")
+                metin = yazi.get(1.0,END)
+                dosya.write("\n" +  metin + "\n" + "YAZAR : " + giriskadi.get() + " "   + "Tarih Saat :" + tarihsaat  + "\n" )
+                dosya.close()
+                
+            else :
+                messagebox.showwarning("Doðrulama YAPILAMADAI","Doðrulama Kodunu Tekrar Giriniz")
+        
+        btn_kont = Button(pencere2,text="DOÐRULA ve KAYDET", command = guvenlik_kodu)
+       
+                
+        btn_kont.pack()
+        btn_kont.place(x = 300 , y = 200)
+        pencere2.mainloop()
+        
+#####################################################################################################################
+
+
+    else:
+        messagebox.showwarning("YASAK GÝRÝÞ","Kullanýcý Kaydý Bulunamdaý")
+    
+
+################################################################################################################
+
+EtiketGiris = Label(text = "Lütfen Kullanýcý Adý \n Þifrenizi giriniz" , font = "Helvetica 18")
+EtiketGiris.pack()
+EtiketGiris.configure(bg='#FF8A17')
+EtiketKadi = Label(text="Kullanýcý Adý : ")
+EtiketKadi.configure(bg='#FF8A17')
+EtiketSifre = Label(text="Þifreniz : ")
+EtiketSifre.configure(bg='#FF8A17')
+EtiketKadi.pack()
+EtiketSifre.pack()
+EtiketKadi.place(x = 10,y = 70)
+EtiketSifre.place(x = 10,y = 100)
+
+giriskadi = Entry(bd=2)
+giriskadi.place(x = 150,y = 70)
+
+girissifre = Entry(bd=2)
+girissifre.place(x = 150,y = 100)
+girissifre.config(show="*");
+
+GirisButon = Button(text="Giriþ Yap", command = login)
+GirisButon.pack()
+GirisButon.place(x = 200 , y = 140)
+
+
+################################
+
+ramazan = Label(text = "ramazan ")
+ramazan.pack()
+ramazan.place(x = 310,y = 70)
+sifre = Label(text="2020")
+sifre.pack()
+sifre.place(x = 310,y = 100)
+
+
+#################################
+
+mainloop()
